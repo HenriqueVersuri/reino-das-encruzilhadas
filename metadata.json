@@ -1,0 +1,7 @@
+{
+  "name": "Reino das Encruzilhadas",
+  "description": "Uma plataforma mística inspirada nas tradições ancestrais, oferecendo consultas espirituais, sabedoria dos oráculos e conhecimento sobre as entidades do Reino.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
