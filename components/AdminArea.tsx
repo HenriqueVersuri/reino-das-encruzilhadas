@@ -45,6 +45,23 @@ const AdminArea: React.FC<AdminAreaProps> = ({
     return { totalDonations, totalPayments, totalArrecadado, maxDonation };
   }, [donations, payments]);
 
+  const dashboardOverview = useMemo(() => {
+    const totalMembers = allMembers.length;
+    const adminCount = allMembers.filter(member => member.isAdmin).length;
+    const pendingPayments = payments.filter(p => p.status === 'pendente').length;
+    const lowStock = inventory.filter(item => item.quantity <= 5);
+    const recentDonations = [...donations]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 5);
+    return {
+      totalMembers,
+      adminCount,
+      pendingPayments,
+      lowStock,
+      recentDonations,
+    };
+  }, [allMembers, donations, inventory, payments]);
+
   const togglePaymentStatus = (paymentId: string) => {
     const newList = payments.map(p => {
       if (p.id === paymentId) {
@@ -125,6 +142,77 @@ const AdminArea: React.FC<AdminAreaProps> = ({
                 <div className="bg-neutral-900 border border-neutral-800 p-8 rounded-[2.5rem] shadow-xl">
                   <p className="text-[10px] uppercase font-bold text-neutral-500 tracking-widest mb-2">Doações Espontâneas</p>
                   <p className="text-4xl font-bold text-[#8b0000]">R$ {stats.totalDonations.toLocaleString()}</p>
+                </div>
+              </div>
+
+              {/* Visão Geral do Reino */}
+              <div className="bg-neutral-900 border border-neutral-800 rounded-[3rem] p-8 shadow-2xl space-y-8">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <h3 className="text-lg font-bold text-white uppercase font-mystical tracking-wider">Visão Geral do Reino</h3>
+                  <p className="text-[9px] uppercase font-bold tracking-[0.3em] text-neutral-500">Sinais do Conselho</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-black/40 border border-neutral-800 rounded-[2rem] p-6 space-y-3">
+                    <p className="text-[9px] uppercase font-bold tracking-widest text-neutral-500">Iniciados ativos</p>
+                    <p className="text-3xl font-bold text-white">{dashboardOverview.totalMembers}</p>
+                    <p className="text-[10px] text-neutral-600 uppercase font-bold tracking-widest">Linhagem completa</p>
+                  </div>
+                  <div className="bg-black/40 border border-neutral-800 rounded-[2rem] p-6 space-y-3">
+                    <p className="text-[9px] uppercase font-bold tracking-widest text-neutral-500">Guardas supremos</p>
+                    <p className="text-3xl font-bold text-[#d4af37]">{dashboardOverview.adminCount}</p>
+                    <p className="text-[10px] text-neutral-600 uppercase font-bold tracking-widest">Comando ativo</p>
+                  </div>
+                  <div className="bg-black/40 border border-neutral-800 rounded-[2rem] p-6 space-y-3">
+                    <p className="text-[9px] uppercase font-bold tracking-widest text-neutral-500">Pendências mensais</p>
+                    <p className="text-3xl font-bold text-[#8b0000]">{dashboardOverview.pendingPayments}</p>
+                    <p className="text-[10px] text-neutral-600 uppercase font-bold tracking-widest">Alertas de vibração</p>
+                  </div>
+                  <div className="bg-black/40 border border-neutral-800 rounded-[2rem] p-6 space-y-3">
+                    <p className="text-[9px] uppercase font-bold tracking-widest text-neutral-500">Estoque crítico</p>
+                    <p className="text-3xl font-bold text-white">{dashboardOverview.lowStock.length}</p>
+                    <p className="text-[10px] text-neutral-600 uppercase font-bold tracking-widest">Itens abaixo de 5</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="bg-black/40 border border-neutral-800 rounded-[2.5rem] p-6 space-y-5">
+                    <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-400">Últimas doações</h4>
+                    {dashboardOverview.recentDonations.length > 0 ? (
+                      <div className="space-y-4">
+                        {dashboardOverview.recentDonations.map((donation) => (
+                          <div key={donation.id} className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-bold text-white">{donation.memberName}</p>
+                              <p className="text-[10px] uppercase font-bold tracking-widest text-neutral-600">{donation.purpose}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-bold text-[#d4af37]">R$ {donation.amount}</p>
+                              <p className="text-[10px] uppercase font-bold tracking-widest text-neutral-600">{donation.date}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-neutral-700">Sem registros recentes.</p>
+                    )}
+                  </div>
+                  <div className="bg-black/40 border border-neutral-800 rounded-[2.5rem] p-6 space-y-5">
+                    <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-400">Itens com atenção</h4>
+                    {dashboardOverview.lowStock.length > 0 ? (
+                      <div className="space-y-4">
+                        {dashboardOverview.lowStock.map(item => (
+                          <div key={item.id} className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-bold text-white">{item.name}</p>
+                              <p className="text-[10px] uppercase font-bold tracking-widest text-neutral-600">{item.category}</p>
+                            </div>
+                            <p className="text-sm font-bold text-[#8b0000]">{item.quantity} {item.unit}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-neutral-700">Estoque equilibrado.</p>
+                    )}
+                  </div>
                 </div>
               </div>
 
