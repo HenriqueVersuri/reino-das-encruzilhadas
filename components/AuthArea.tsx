@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { User } from '../types';
 import { Icons } from '../constants';
 
@@ -14,12 +14,24 @@ const AuthArea: React.FC<AuthAreaProps> = ({ onLogin }) => {
   const [name, setName] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const loginTriggeredRef = useRef(false);
+  const pendingUserRef = useRef<User | null>(null);
+
+  const triggerLogin = () => {
+    if (loginTriggeredRef.current || !pendingUserRef.current) return;
+    loginTriggeredRef.current = true;
+    setShowToast(false);
+    onLogin(pendingUserRef.current);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    loginTriggeredRef.current = false;
     const isActuallyAdmin = email.toLowerCase() === 'versurih@gmail.com' && password === 'Reidas7encruzas';
     if (!isActuallyAdmin) {
       setToastMessage('Credenciais inválidas. Use o acesso autorizado.');
+      setToastType('error');
       setShowToast(true);
       return;
     }
@@ -33,20 +45,41 @@ const AuthArea: React.FC<AuthAreaProps> = ({ onLogin }) => {
       isAdmin: isActuallyAdmin
     };
 
+    pendingUserRef.current = userObj;
     setToastMessage(`Bem-vindo ao Reino, ${userName}!`);
+    setToastType('success');
     setShowToast(true);
 
     setTimeout(() => {
-      onLogin(userObj);
+      triggerLogin();
     }, 1200);
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] p-6 relative animate-in fade-in duration-700">
       {showToast && (
-        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] bg-black/90 border border-[#d4af37] px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(139,0,0,0.4)] flex items-center space-x-4 backdrop-blur-md">
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] bg-black/90 border border-[#d4af37] px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(139,0,0,0.4)] flex items-center space-x-4 backdrop-blur-md">
           <div className="text-[#d4af37] animate-pulse"><Icons.Trident /></div>
           <p className="text-[#d4af37] font-bold uppercase tracking-widest text-xs">{toastMessage}</p>
+          <div className="flex items-center space-x-2">
+            {toastType === 'success' ? (
+              <button
+                type="button"
+                onClick={triggerLogin}
+                className="px-3 py-2 text-[9px] uppercase font-bold tracking-widest text-[#d4af37] border border-[#d4af37]/40 rounded-xl hover:bg-[#d4af37]/10 transition-all"
+              >
+                Ir ao painel
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowToast(false)}
+                className="w-7 h-7 rounded-full border border-[#d4af37]/40 text-[#d4af37] flex items-center justify-center text-[10px] font-bold uppercase hover:bg-[#d4af37]/10 transition-all"
+              >
+                X
+              </button>
+            )}
+          </div>
         </div>
       )}
 

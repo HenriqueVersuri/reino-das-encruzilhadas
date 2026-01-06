@@ -128,7 +128,14 @@ const App: React.FC = () => {
           </div>
         );
       case View.CALENDAR: return <CalendarArea events={events} />;
-      case View.AUTH: return <AuthArea onLogin={setUser} />;
+      case View.AUTH: return (
+        <AuthArea
+          onLogin={(nextUser) => {
+            setUser(nextUser);
+            setActiveView(View.ADMIN);
+          }}
+        />
+      );
       case View.MEMBERS: return user ? <MemberArea user={user} onUpdateUser={setUser} /> : <AuthArea onLogin={setUser} />;
       case View.ADMIN: return (
         <AdminArea 
