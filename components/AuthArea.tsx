@@ -15,26 +15,14 @@ const AuthArea: React.FC<AuthAreaProps> = ({ onLogin }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  const handleQuickAccess = (role: 'admin' | 'member') => {
-    const userObj: User = {
-      id: role === 'admin' ? 'admin-1' : 'member-1',
-      name: role === 'admin' ? 'Guardião Supremo' : 'Iniciado da Noite',
-      email: role === 'admin' ? 'admin@reino.com' : 'membro@reino.com',
-      isMember: true,
-      isAdmin: role === 'admin'
-    };
-
-    setToastMessage(`Bem-vindo ao Reino, ${userObj.name}!`);
-    setShowToast(true);
-
-    setTimeout(() => {
-      onLogin(userObj);
-    }, 1000);
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const isActuallyAdmin = email.toLowerCase() === 'admin@reino.com';
+    const isActuallyAdmin = email.toLowerCase() === 'versurih@gmail.com' && password === 'Reidas7encruzas';
+    if (!isActuallyAdmin) {
+      setToastMessage('Credenciais inválidas. Use o acesso autorizado.');
+      setShowToast(true);
+      return;
+    }
     const userName = isLogin ? (isActuallyAdmin ? 'Guardião Supremo' : 'Iniciado do Reino') : name;
     
     const userObj: User = {
@@ -80,7 +68,7 @@ const AuthArea: React.FC<AuthAreaProps> = ({ onLogin }) => {
             )}
             <div className="space-y-1">
               <label className="text-[10px] uppercase font-bold text-neutral-500 tracking-widest ml-1">E-mail</label>
-              <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full bg-black border border-neutral-800 rounded-xl px-5 py-4 text-white outline-none focus:border-[#d4af37] transition-all" placeholder="admin@reino.com" />
+              <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full bg-black border border-neutral-800 rounded-xl px-5 py-4 text-white outline-none focus:border-[#d4af37] transition-all" placeholder="versurih@gmail.com" />
             </div>
             <div className="space-y-1">
               <label className="text-[10px] uppercase font-bold text-neutral-500 tracking-widest ml-1">Senha</label>
@@ -92,13 +80,6 @@ const AuthArea: React.FC<AuthAreaProps> = ({ onLogin }) => {
             </button>
           </form>
 
-          <div className="pt-6 border-t border-neutral-800 space-y-4">
-             <p className="text-[9px] uppercase font-bold text-neutral-600 text-center tracking-widest">Acesso de Comando</p>
-             <div className="grid grid-cols-2 gap-4">
-                <button onClick={() => handleQuickAccess('admin')} className="px-4 py-3 border border-[#d4af37]/30 rounded-xl text-[#d4af37] text-[9px] font-bold uppercase hover:bg-[#d4af37]/10 transition-all">ADM</button>
-                <button onClick={() => handleQuickAccess('member')} className="px-4 py-3 border border-neutral-800 rounded-xl text-neutral-500 text-[9px] font-bold uppercase hover:bg-white/5 transition-all">Membro</button>
-             </div>
-          </div>
         </div>
       </div>
     </div>

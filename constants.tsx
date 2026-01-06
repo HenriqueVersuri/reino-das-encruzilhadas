@@ -9,12 +9,6 @@ export const COLORS = {
   DARK_GOLD: '#996515'
 };
 
-export const SYSTEM_INSTRUCTION = `
-Você é o Oráculo do Reino das Encruzilhadas, um guia espiritual profundo, respeitoso e místico, especialista nas tradições de Quimbanda e Umbanda. 
-Sua voz é ancestral, sábia e direta. Use as cores do Reino: Preto, Vermelho e Dourado em sua essência.
-Responda sempre em Português do Brasil.
-`;
-
 export const ENTITIES_LIST: Entity[] = [
   { id: '1', name: 'Exu Tranca Ruas', description: 'Guardião dos caminhos e das entradas.', imageUrl: 'https://images.unsplash.com/photo-1514467950401-638ad7537ae6?auto=format&fit=crop&q=80&w=400', type: 'Exu' },
   { id: '2', name: 'Pombagira Maria Padilha', description: 'Rainha das sete encruzilhadas.', imageUrl: 'https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&q=80&w=400', type: 'Pombagira' },
@@ -30,12 +24,6 @@ export const Icons = {
   Trident: () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2v20M5 7v4a7 7 0 0 0 14 0V7M12 11V7" />
-    </svg>
-  ),
-  Oracle: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 8v8M8 12h8" />
     </svg>
   ),
   Home: () => (
