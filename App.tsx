@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Layout from './components/Layout';
-import OracleChat from './components/OracleChat';
 import AdminArea from './components/AdminArea';
 import AuthArea from './components/AuthArea';
 import CalendarArea from './components/CalendarArea';
@@ -125,12 +124,10 @@ const App: React.FC = () => {
             </div>
             <h2 className="text-5xl md:text-7xl font-bold tracking-[0.2em] text-white uppercase font-mystical">REINO DAS <br/><span className="text-[#d4af37]">ENCRUZILHADAS</span></h2>
             <div className="flex flex-wrap justify-center gap-6 pt-12">
-              <button onClick={() => setActiveView(View.ORACLE)} className="px-10 py-4 bg-[#8b0000] text-[#d4af37] border border-[#d4af37]/50 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:scale-105">Oráculo</button>
-              <button onClick={() => setActiveView(user ? View.MEMBERS : View.AUTH)} className="px-10 py-4 bg-transparent border border-[#d4af37]/30 text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white/5">Santuário</button>
+              <button onClick={() => setActiveView(user ? View.MEMBERS : View.AUTH)} className="px-10 py-4 bg-[#8b0000] text-[#d4af37] border border-[#d4af37]/50 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:scale-105">Santuário</button>
             </div>
           </div>
         );
-      case View.ORACLE: return <OracleChat />;
       case View.CALENDAR: return <CalendarArea events={events} />;
       case View.AUTH: return <AuthArea onLogin={setUser} />;
       case View.MEMBERS: return user ? <MemberArea user={user} onUpdateUser={setUser} /> : <AuthArea onLogin={setUser} />;

@@ -1,6 +1,6 @@
 # Backend Node.js - Reino das Encruzilhadas
 
-Este backend usa Express e SQLite para armazenar mensagens do oráculo.
+Este backend usa Express e SQLite para armazenar mensagens do sistema.
 
 ## Como rodar localmente
 
