@@ -59,6 +59,14 @@ const AuthArea: React.FC<AuthAreaProps> = ({ onLogin }) => {
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] bg-black/90 border border-[#d4af37] px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(139,0,0,0.4)] flex items-center space-x-4 backdrop-blur-md">
           <div className="text-[#d4af37] animate-pulse"><Icons.Trident /></div>
           <p className="text-[#d4af37] font-bold uppercase tracking-widest text-xs">{toastMessage}</p>
+          <button
+            type="button"
+            onClick={() => setShowToast(false)}
+            className="text-[#d4af37]/70 hover:text-[#d4af37] transition-colors text-sm font-bold"
+            aria-label="Fechar aviso"
+          >
+            ×
+          </button>
         </div>
       )}
 

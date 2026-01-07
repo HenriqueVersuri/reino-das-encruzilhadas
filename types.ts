@@ -1,7 +1,6 @@
 
 export enum View {
   HOME = 'HOME',
-  ORACLE = 'ORACLE',
   ENTITIES = 'ENTITIES',
   KNOWLEDGE = 'KNOWLEDGE',
   ADMIN = 'ADMIN',

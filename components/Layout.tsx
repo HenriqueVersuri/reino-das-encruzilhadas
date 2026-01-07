@@ -14,7 +14,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, activeView, onNavigate, user, onLogout }) => {
   const navItems = [
     { id: View.HOME, label: 'Início', icon: <Icons.Home /> },
-    { id: View.ORACLE, label: 'Oráculo', icon: <Icons.Oracle /> },
     { id: View.ENTITIES, label: 'Guardiões', icon: <Icons.Trident /> },
     { id: View.CALENDAR, label: 'Agenda', icon: <Icons.Calendar /> },
   ];
