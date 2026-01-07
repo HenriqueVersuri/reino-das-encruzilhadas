@@ -131,7 +131,14 @@ const App: React.FC = () => {
       case View.CALENDAR: return <CalendarArea events={events} />;
       case View.AUTH: return <AuthArea onLogin={setUser} />;
       case View.MEMBERS: return user ? <MemberArea user={user} onUpdateUser={setUser} /> : <AuthArea onLogin={setUser} />;
-      case View.ADMIN: return (
+      case View.ADMIN:
+        if (!user) {
+          return <AuthArea onLogin={setUser} />;
+        }
+        if (!user.isAdmin) {
+          return <MemberArea user={user} onUpdateUser={setUser} />;
+        }
+        return (
         <AdminArea 
           entities={entities} onUpdateEntities={setEntities}
           events={events} onUpdateEvents={setEvents}
